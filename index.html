@@ -37,6 +37,19 @@
   .modalHead{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#121827;z-index:2}
   .modalHead h2{margin:0;font-size:20px}.x{border:0;background:transparent;color:white;font-size:28px;cursor:pointer}
   .modalBody{padding:22px}
+  .imageFallback{
+    display:none;
+    min-height:180px;
+    place-items:center;
+    text-align:center;
+    border:1px dashed var(--line);
+    border-radius:16px;
+    margin:0 0 18px;
+    padding:24px;
+    color:var(--muted);
+    background:#171e2e;
+    font-weight:800;
+  }
   .question{font-size:clamp(24px,3vw,38px);line-height:1.2;margin:0 0 18px;font-weight:900}
 
   .questionVisual{
@@ -88,14 +101,7 @@
       <button class="btn danger" onclick="resetGame()">↻ Reset game</button>
     </div>
   </div>
-
-
-  <div style="margin:6px 0 18px">
-    <img src="teens_then_now_board.png" alt="Teens Then and Now game visual"
-         style="width:100%;max-height:220px;object-fit:cover;object-position:center top;border-radius:18px;border:1px solid var(--line);display:block">
-  </div>
-
-  <div class="scorebar">
+<div class="scorebar">
     <div class="team"><strong>TEAM 1</strong><div class="scorebuttons"><button onclick="score(1,-100)">−</button><span class="score" id="s1">0</span><button onclick="score(1,100)">+</button></div></div>
     <div class="team"><strong>TEAM 2</strong><div class="scorebuttons"><button onclick="score(2,-100)">−</button><span class="score" id="s2">0</span><button onclick="score(2,100)">+</button></div></div>
   </div>
@@ -119,12 +125,19 @@ const categories = [
 ];
 
 
-const categoryImages = {
-  communication: "communication.jpg",
-  manners: "manners.jpg",
-  mental: "mental_skills.jpg",
-  community: "community.jpg",
-  video: "video_challenge.jpg"
+const cardImages = {
+  c100: "communication100.jpg",
+  c200: "communication200.jpg",
+  c300: "communication300.jpg",
+  m100: "manners100.jpg",
+  m200: "manners200.jpg",
+  m300: "manners300.jpg",
+  mns100: "mental100.jpg",
+  mns200: "mental200.jpg",
+  mns300: "mental300.jpg",
+  co100: "community100.jpg",
+  co200: "community200.jpg",
+  co300: "community300.jpg"
 };
 
 const cards = [
@@ -244,7 +257,7 @@ function openCard(card){
       <div class="actions"><button class="btn good" onclick="closeModal()">✓ Mark played & back to board</button></div>`;
   }else{
     body.innerHTML=`
-      <img class="questionVisual" src="${categoryImages[card.cat]}" alt="${categories.find(c=>c.key===card.cat).label} discussion visual">
+      <img class="questionVisual" src="${cardImages[card.id]}" alt="${categories.find(c=>c.key===card.cat).label} discussion visual" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="imageFallback">Upload image: <strong>${cardImages[card.id]}</strong></div>
       <div class="question">${card.q}</div>
       <div class="choices">${card.choices.map(x=>`<div class="choice">${x}</div>`).join("")}</div>
       <div class="actions"><button class="btn primary" onclick="document.getElementById('reveal').style.display='block'">Reveal answer</button></div>
